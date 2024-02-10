@@ -1,7 +1,7 @@
 {
   "author": "TheeDeer (https://github.com/TheeDeer0)",
-  "name": "@theedeer/battlemetrics",
-  "version": "1.0.4",
+  "name": "@theedeer0/battlemetrics-api",
+  "version": "1.0.5",
   "description": "An object-oriented BattleMetrics API wrapper for Node.js developers with TypeScript support.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

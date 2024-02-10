@@ -8,10 +8,10 @@
  */
 
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
-import { Player, PlayerIncludeOptions } from './types/Player';
+import { Player, PlayerIncludeOptions, Players, PlayersIncludeOptions } from './types/Player';
 import { QuickMatchOptions, QuickMatchResponse } from './types/QuickMatch';
 
-export default class BattleMetrics {
+export default class BattleMetricsClass {
 	private axios: AxiosInstance;
 	constructor(token: string) {
 		if (typeof token !== 'string' || token.length === 0) {
@@ -27,6 +27,37 @@ export default class BattleMetrics {
 	}
 
 	/**
+	 * Fetches players from the BattleMetrics API.
+	 *
+	 * @param {string} search - The search query.
+	 * @param {PlayersIncludeOptions[]} include - The resources to include in the response.
+	 * @param {number} pageSize - The number of results per page.
+	 * @returns {Promise<Players>} A Promise that resolves to an object of Players.
+	 * @throws {Error} Will throw an error if the request fails.
+	 *
+	 * For more information, see the [BattleMetrics API documentation](https://www.battlemetrics.com/developers/documentation#link-GET-player-/players)}).
+	 */
+	async getPlayers(
+		search: string = '',
+		include: PlayersIncludeOptions[] = [],
+		pageSize: number = 42
+	): Promise<Players> {
+		try {
+			const params = new URLSearchParams();
+			if (search.length > 0) params.append('filter[search]', search);
+			if (include.length > 0) params.append('include', include.join(','));
+			if (pageSize) params.append('page[size]', String(pageSize));
+
+			const res: AxiosResponse = await this.axios.get(`/players?${params.toString()}`);
+			const players: Players = res.data;
+			return players;
+		} catch (err: AxiosError | any) {
+			console.error(`Failed to get players. Error: ${err.message}`);
+			throw err;
+		}
+	}
+
+	/**
 	 * Fetches a player's data from the BattleMetrics API by their BM ID.
 	 *
 	 * @param {string} id - The Battlemetrics ID of the player to fetch.
@@ -38,13 +69,14 @@ export default class BattleMetrics {
 	 */
 	async getPlayerById(id: string, include: PlayerIncludeOptions[] = []): Promise<Player> {
 		try {
-			const res: AxiosResponse = await this.axios.get(
-				`/players/${id}${include.length > 0 ? `?include=${include.join(',')}` : ''}`
-			);
+			const params = new URLSearchParams();
+			if (include.length > 0) params.append('include', include.join(','));
+
+			const res: AxiosResponse = await this.axios.get(`/players/${id}?${params.toString()}`);
 			const player: Player = res.data;
 			return player;
 		} catch (err: AxiosError | any) {
-			console.error(`Failed to get player by id: ${id}. Error: ${err.message}`);
+			console.error(`Failed to find players by quick match. Error: ${err.message}`);
 			throw err;
 		}
 	}

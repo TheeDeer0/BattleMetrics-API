@@ -11,6 +11,14 @@
 export type PlayerIncludeOptions = ('server' | 'identifier' | 'playerCounter' | 'playerFlag' | 'flagPlayer')[];
 
 /**
+ * Represents the options for the resources to include in the response when fetching a list of players from the BattleMetrics system.
+ *
+ * @typedef {Array} PlayersIncludeOptions
+ * @property {'identifier'} - Include the identifiers associated with the player.
+ */
+export type PlayersIncludeOptions = ('server' | 'identifier' | 'playerCounter' | 'playerFlag' | 'flagPlayer')[];
+
+/**
  * Represents the main attributes of a player in the BattleMetrics system.
  *
  * @interface
@@ -244,4 +252,20 @@ export interface Player {
 		| PlayerServerInclude
 		| null
 	];
+}
+
+export interface Players {
+	data: Player[];
+	included?: [
+		| PlayerServerInclude
+		| PlayerIdentifierInclude
+		| PlayerFlagPlayerInclude
+		| PlayerFlagInclude
+		| PlayerServerInclude
+		| null
+	];
+	links: {
+		next: string | null;
+		prev: string | null;
+	};
 }
