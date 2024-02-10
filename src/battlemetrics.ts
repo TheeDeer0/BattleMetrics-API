@@ -7,18 +7,23 @@
  * - axios: Used to make HTTP requests to the BattleMetrics API.
  */
 
-import axios, { AxiosResponse, AxiosError } from 'axios';
+import axios, { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
 import { Player, PlayerIncludeOptions } from './types/Player';
 import { QuickMatchOptions } from './types/QuickMatch';
 
 export default class BattleMetrics {
-	private axios: any;
+	private axios: AxiosInstance;
 	constructor(token: string) {
-		if (!token) throw new Error('No token provided for BattleMetrics API');
-		this.axios = axios;
-		this.axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-		this.axios.defaults.baseURL = 'https://api.battlemetrics.com';
-		this.axios.defaults.headers.post['Content-Type'] = 'application/json';
+		if (typeof token !== 'string' || token.length === 0) {
+			throw new Error('Invalid token provided for BattleMetrics API');
+		}
+		this.axios = axios.create({
+			baseURL: 'https://api.battlemetrics.com',
+			headers: {
+				Authorization: `Bearer ${token}`,
+				'Content-Type': 'application/json',
+			},
+		});
 	}
 
 	/**
@@ -37,7 +42,8 @@ export default class BattleMetrics {
 			const player: Player = res.data;
 			return player;
 		} catch (err: AxiosError | any) {
-			throw new Error(`Failed to get player by id: ${id}. Error: ${err.message}`);
+			console.error(`Failed to get player by id: ${id}. Error: ${err.message}`);
+			throw err;
 		}
 	}
 
@@ -56,7 +62,8 @@ export default class BattleMetrics {
 			const players: Player[] = res.data;
 			return players;
 		} catch (err: AxiosError | any) {
-			throw new Error(`Failed to find players by quick match. Error: ${err.message}`);
+			console.error(`Failed to find players by quick match. Error: ${err.message}`);
+			throw err;
 		}
 	}
 }
