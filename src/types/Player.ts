@@ -1,40 +1,47 @@
+export type PlayerIncludeOptions = ('server' | 'identifier' | 'playerCounter' | 'playerFlag' | 'flagPlayer')[];
+
 export interface PlayerAttributes {
-    id: string;
-    createdAt: string;
-    updatedAt: string;
-    name: string;
-    private: boolean;
-    positiveMatch: boolean;
+	id: string;
+	createdAt: string;
+	updatedAt: string;
+	name: string;
+	private: boolean;
+	positiveMatch: boolean;
 }
 
 export interface PlayerData {
-    type: string;
-    id: string;
-    attributes: PlayerAttributes;
-    meta: any;         
+	type: string;
+	id: string;
+	attributes: PlayerAttributes;
+	meta: any;
 }
 
 export interface Relation {
-    type: string;
-    id: string;
-    meta?: {
-        firstSeen?: string;
-        lastSeen?: string;
-        timePlayed?: number;
-        online?: boolean;
-    }
+	type: string;
+	id: string;
+	meta?: {
+		firstSeen?: string;
+		lastSeen?: string;
+		timePlayed?: number;
+		online?: boolean;
+	};
 }
 
 export interface Relationships {
-    data: Relation[] | Relation;
+	data: Relation[] | Relation;
 }
 
 export interface PlayerRelationships {
-    organizations: Relationships;
+	organizations?: Relationships;
+	player?: Relationships;
+	server?: Relationships;
+	game?: Relationships;
+	user?: Relationships;
+	playerFlag?: Relationships;
 }
 
 export interface PlayerIdentifierInclude {
-    type: string;
+	type: string;
 	id: string;
 	attributes: {
 		type: string;
@@ -70,10 +77,50 @@ export interface PlayerServerInclude {
 		country: string;
 		queryStatus: string;
 	};
+	relaationships: PlayerRelationships;
+	meta: {
+		timePlayed: number;
+		firstSeen: string;
+		lastSeen: string;
+		online: boolean;
+	};
+}
+
+export interface PlayerFlagPlayerInclude {
+	type: string;
+	id: string;
+	attributes: {
+		addedAt: string;
+		removedAt?: string;
+	};
+	relationships: Relationships;
+}
+
+export interface PlayerFlagInclude {
+	type: string;
+	id: string;
+	attributes: {
+		createdAt: string;
+		uppdatedAt: string;
+		icon: string;
+		name: string;
+		color: string;
+		description: string;
+	};
+	relationships: {
+		players: Relationships;
+	};
 }
 
 export interface Player {
-    data: PlayerData;
-    relationships: PlayerRelationships;
-    included?: [PlayerServerInclude | PlayerIdentifierInclude | null];
+	data: PlayerData;
+	relationships: PlayerRelationships;
+	included?: [
+		| PlayerServerInclude
+		| PlayerIdentifierInclude
+		| PlayerFlagPlayerInclude
+		| PlayerFlagInclude
+		| PlayerServerInclude
+		| null
+	];
 }

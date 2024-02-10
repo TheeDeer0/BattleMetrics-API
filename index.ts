@@ -1,6 +1,3 @@
-import BattleMetrics from "./src/battlemetrics";
-import { Player } from "./src/types/Player";
+import BattleMetrics from './src/BattleMetrics';
 
-export default BattleMetrics;
-
-export { Player };
+export = BattleMetrics;
