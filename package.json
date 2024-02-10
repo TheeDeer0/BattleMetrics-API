@@ -7,7 +7,7 @@
   "types": "dist/index.d.ts",
   "private": false,
   "module": "dist/index.js",
-  "type":"commonjs",
+  "type": "commonjs",
   "bugs": {
     "web": "https://github.com/TheeDeer0/BattleMetrics-API/issues"
   },
@@ -16,7 +16,8 @@
     "url": "https://github.com/TheeDeer0/BattleMetrics-API"
   },
   "scripts": {
-    "prepublish": "tsc"
+    "prepublish": "tsc",
+    "tsdoc": "typedoc --plugin typedoc-plugin-markdown --readme none --out docs index.ts"
   },
   "homepage": "https://github.com/TheeDeer0/BattleMetrics-API#readme",
   "keywords": [
@@ -30,11 +31,11 @@
   ],
   "dependencies": {
     "axios": "^1.6.7"
-    
   },
   "devDependencies": {
     "@types/node": "^20.11.5",
     "typescript": "^5.3.3",
-    "tsc-watch": "^6.0.4"
+    "typedoc": "^0.25.7",
+		"typedoc-plugin-markdown": "^3.17.1"
   }
 }
