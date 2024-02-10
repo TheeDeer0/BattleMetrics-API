@@ -2,9 +2,9 @@
 
 <div align="center">
   <p>
-    <a href="https://discord.gg/8rFdXNX8"><img src="https://discordapp.com/api/guilds/1186098831151091712/embed.png" alt="Discord server" /></a>
-    <a href="https://www.npmjs.com/package/@theedeer0/battlemetrics-api"><img src="https://img.shields.io/npm/v/enmap.svg?maxAge=3600" alt="NPM version" /></a>
-    <a href="https://www.npmjs.com/package/@theedeer0/battlemetrics-api"><img src="https://img.shields.io/npm/dt/enmap.svg?maxAge=3600" alt="NPM downloads" /></a>
+    <a href="https://discord.gg/8rFdXNX8"><img src="https://img.shields.io/discord/1186098831151091712" alt="Discord server" /></a>
+    <a href="https://github.com/TheeDeer0/BattleMetrics-API"><img src="https://img.shields.io/github/license/TheeDeer0/BattleMetrics-API" alt="Github License">
+    <a href="https://www.npmjs.com/package/@theedeer0/battlemetrics-api"><img src="https://img.shields.io/npm/v/%40theedeer0%2Fbattlemetrics-api" alt="NPM version" /></a>
   </p>
 </div>
 
