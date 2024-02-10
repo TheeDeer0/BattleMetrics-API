@@ -1,3 +1,5 @@
+import { Relation } from './Player';
+
 export interface QuickMatchOptions {
 	type: 'identifier';
 	attributes: {
@@ -27,11 +29,27 @@ export interface QuickMatchData {
 	data: QuickMatchOptions[];
 }
 
+export interface QuickMatchResponseData {
+	id: string;
+	type: string;
+	attributes: {
+		type: string;
+		identifier: string;
+		lastSeen: string;
+		private: boolean;
+		metadata: any;
+	};
+	relationships: {
+		player?: Relation;
+		organizations?: Relation;
+	};
+}
+
 export interface QuickMatchResponse {
-	data: [];
+	data: QuickMatchResponseData[] | QuickMatchResponseData;
 	included: [];
 	links: {
-		next: '';
-		prev: '';
+		next: string | null;
+		prev: string | null;
 	};
 }

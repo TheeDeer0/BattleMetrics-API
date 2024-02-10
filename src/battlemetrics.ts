@@ -9,7 +9,7 @@
 
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
 import { Player, PlayerIncludeOptions } from './types/Player';
-import { QuickMatchOptions } from './types/QuickMatch';
+import { QuickMatchOptions, QuickMatchResponse } from './types/QuickMatch';
 
 export default class BattleMetrics {
 	private axios: AxiosInstance;
@@ -33,6 +33,8 @@ export default class BattleMetrics {
 	 * @param {PlayerIncludeOptions[]} [include=[]] - An array of strings specifying additional resources to include in the API response. Valid options are "servers" and "identifiers".
 	 * @returns {Promise<Player>} A Promise that resolves to the Player object.
 	 * @throws {Error} Will throw an error if the request fails.
+	 *
+	 * For more information, see the [BattleMetrics API documentation](https://www.battlemetrics.com/developers/documentation#link-GET-player-/players/{(%23%2Fdefinitions%2Fplayer%2Fdefinitions%2Fidentity)}).
 	 */
 	async getPlayerById(id: string, include: PlayerIncludeOptions[] = []): Promise<Player> {
 		try {
@@ -51,15 +53,17 @@ export default class BattleMetrics {
 	 * Fetches players from the BattleMetrics API using the quick match feature.
 	 *
 	 * @param {QuickMatchOptions} options - The options for the quick match feature. This should be an object that conforms to the QuickMatchOptions interface, which includes the type of identifier and the identifier itself.
-	 * @returns {Promise<Player[]>} A Promise that resolves to an array of Player objects.
+	 * @returns {Promise<QuickMatchResponse[]>} A Promise that resolves to an array of QuickMatchResponse objects.
 	 * @throws {Error} Will throw an error if the request fails.
+	 *
+	 * For more information, see the [BattleMetrics API documentation](https://www.battlemetrics.com/developers/documentation#link-POST-player-/players/quick-match).
 	 */
-	async findPlayersByQuickMatch(options: QuickMatchOptions): Promise<Player[]> {
+	async findPlayersByQuickMatch(options: QuickMatchOptions): Promise<QuickMatchResponse[]> {
 		try {
 			const res: AxiosResponse = await this.axios.post(`/players/match`, {
 				data: [options],
 			});
-			const players: Player[] = res.data;
+			const players: QuickMatchResponse[] = res.data;
 			return players;
 		} catch (err: AxiosError | any) {
 			console.error(`Failed to find players by quick match. Error: ${err.message}`);
