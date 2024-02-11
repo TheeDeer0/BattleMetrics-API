@@ -13,8 +13,13 @@ import {
 	PlayerServerInclude,
 	PlayerFlagPlayerInclude,
 	PlayerFlagInclude,
-} from './src/types/Player';
-import { QuickMatchOptions, QuickMatchResponse, QuickMatchResponseData, QuickMatchData } from './src/types/QuickMatch';
+} from './src/structure/Player';
+import {
+	QuickMatchOptions,
+	QuickMatchResponse,
+	QuickMatchResponseData,
+	QuickMatchData,
+} from './src/structure/QuickMatch';
 
 export { BattleMetricsClass as BattleMetrics };
 

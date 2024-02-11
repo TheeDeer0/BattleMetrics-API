@@ -15,8 +15,8 @@ import {
 	PlayersIncludeOptions,
 	RelationIncludeOptions,
 	relatedIdentifiers,
-} from './types/Player';
-import { QuickMatchOptions, QuickMatchResponse } from './types/QuickMatch';
+} from './structure/Player';
+import { QuickMatchOptions, QuickMatchResponse } from './structure/QuickMatch';
 
 export default class BattleMetricsClass {
 	private axios: AxiosInstance;
