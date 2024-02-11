@@ -1,4 +1,4 @@
-import { Relation } from './Player';
+import { Relation } from './Common';
 
 export interface QuickMatchOptions {
 	type: 'identifier';

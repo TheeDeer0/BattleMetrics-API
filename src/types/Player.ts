@@ -1,3 +1,4 @@
+import { Relation, Relationships } from './Common';
 /**
  * Represents the options for the resources to include in the response when fetching a player from the BattleMetrics system.
  *
@@ -17,6 +18,8 @@ export type PlayerIncludeOptions = ('server' | 'identifier' | 'playerCounter' | 
  * @property {'identifier'} - Include the identifiers associated with the player.
  */
 export type PlayersIncludeOptions = ('server' | 'identifier' | 'playerCounter' | 'playerFlag' | 'flagPlayer')[];
+
+export type RelationIncludeOptions = ('player' | 'identifier')[];
 
 /**
  * Represents the main attributes of a player in the BattleMetrics system.
@@ -52,39 +55,6 @@ export interface PlayerData {
 	id: string;
 	attributes: PlayerAttributes;
 	meta: any;
-}
-
-/**
- * Represents a relationship of an entity with another entity in the BattleMetrics system.
- *
- * @interface
- * @property {string} type - The type of the related entity.
- * @property {string} id - The unique ID of the related entity.
- * @property {object} [meta] - Optional. Additional metadata about the relationship.
- * @property {string} [meta.firstSeen] - Optional. The date and time when the related entity was first seen.
- * @property {string} [meta.lastSeen] - Optional. The date and time when the related entity was last seen.
- * @property {number} [meta.timePlayed] - Optional. The total time, in minutes, that the related entity has been played.
- * @property {boolean} [meta.online] - Optional. Whether the related entity is currently online.
- */
-export interface Relation {
-	type: string;
-	id: string;
-	meta?: {
-		firstSeen?: string;
-		lastSeen?: string;
-		timePlayed?: number;
-		online?: boolean;
-	};
-}
-
-/**
- * Represents the relationships of an entity with other entities in the BattleMetrics system.
- *
- * @interface
- * @property {Relation[] | Relation} data - The data of the relationships. This can be a single Relation object or an array of Relation objects.
- */
-export interface Relationships {
-	data: Relation[] | Relation;
 }
 
 /**
@@ -264,6 +234,44 @@ export interface Players {
 		| PlayerServerInclude
 		| null
 	];
+	links: {
+		next: string | null;
+		prev: string | null;
+	};
+}
+
+export interface relatedIdentiferData {
+	id: string;
+	meta: {
+		commonIdentifier: boolean;
+	};
+	type: string;
+	attributes: {
+		type: string;
+		identifier: string;
+		lastSeen: string;
+		private: boolean;
+		metadata: any;
+	};
+	relationships: {
+		player?: {
+			data: Relation[];
+		};
+		relatedPlayers?: {
+			Data: Relation[];
+		};
+		relatedIdentifiers?: {
+			Data: Relation[];
+		};
+		organizations?: {
+			Data: Relation[];
+		};
+	};
+}
+
+export interface relatedIdentifiers {
+	data: relatedIdentiferData[];
+	included: any[];
 	links: {
 		next: string | null;
 		prev: string | null;

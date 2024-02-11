@@ -8,7 +8,14 @@
  */
 
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
-import { Player, PlayerIncludeOptions, Players, PlayersIncludeOptions } from './types/Player';
+import {
+	Player,
+	PlayerIncludeOptions,
+	Players,
+	PlayersIncludeOptions,
+	RelationIncludeOptions,
+	relatedIdentifiers,
+} from './types/Player';
 import { QuickMatchOptions, QuickMatchResponse } from './types/QuickMatch';
 
 export default class BattleMetricsClass {
@@ -49,7 +56,7 @@ export default class BattleMetricsClass {
 			if (pageSize) params.append('page[size]', String(pageSize));
 
 			const res: AxiosResponse = await this.axios.get(`/players?${params.toString()}`);
-			const players: Players = res.data;
+			const players: Players = res.data as Players;
 			return players;
 		} catch (err: AxiosError | any) {
 			console.error(`Failed to get players. Error: ${err.message}`);
@@ -60,20 +67,20 @@ export default class BattleMetricsClass {
 	/**
 	 * Fetches a player's data from the BattleMetrics API by their BM ID.
 	 *
-	 * @param {string} id - The Battlemetrics ID of the player to fetch.
+	 * @param {string} bmId - The Battlemetrics ID of the player to fetch.
 	 * @param {PlayerIncludeOptions[]} [include=[]] - An array of strings specifying additional resources to include in the API response. Valid options are "servers" and "identifiers".
 	 * @returns {Promise<Player>} A Promise that resolves to the Player object.
 	 * @throws {Error} Will throw an error if the request fails.
 	 *
 	 * For more information, see the [BattleMetrics API documentation](https://www.battlemetrics.com/developers/documentation#link-GET-player-/players/{(%23%2Fdefinitions%2Fplayer%2Fdefinitions%2Fidentity)}).
 	 */
-	async getPlayerById(id: string, include: PlayerIncludeOptions[] = []): Promise<Player> {
+	async getPlayerById(bmId: string, include: PlayerIncludeOptions[] = []): Promise<Player> {
 		try {
 			const params = new URLSearchParams();
 			if (include.length > 0) params.append('include', include.join(','));
 
-			const res: AxiosResponse = await this.axios.get(`/players/${id}?${params.toString()}`);
-			const player: Player = res.data;
+			const res: AxiosResponse = await this.axios.get(`/players/${bmId}?${params.toString()}`);
+			const player: Player = res.data as Player;
 			return player;
 		} catch (err: AxiosError | any) {
 			console.error(`Failed to find players by quick match. Error: ${err.message}`);
@@ -95,10 +102,37 @@ export default class BattleMetricsClass {
 			const res: AxiosResponse = await this.axios.post(`/players/match`, {
 				data: [options],
 			});
-			const players: QuickMatchResponse[] = res.data;
+			const players: QuickMatchResponse[] = res.data as QuickMatchResponse[];
 			return players;
 		} catch (err: AxiosError | any) {
 			console.error(`Failed to find players by quick match. Error: ${err.message}`);
+			throw err;
+		}
+	}
+
+	/**
+	 * Fetches related identifiers for a player from the BattleMetrics API.
+	 *
+	 * @param {string} bmId - The BattleMetrics ID of the player.
+	 * @param {RelationIncludeOptions[]} [include=[]] - An array of strings specifying additional resources to include in the API response.
+	 * @returns {Promise<RelatedIdentifiers>} A Promise that resolves to an object of related identifiers.
+	 * @throws {Error} Will throw an error if the request fails.
+	 */
+	async getRelatedIdentifiersForPlayer(
+		bmId: string,
+		include: RelationIncludeOptions[] = []
+	): Promise<relatedIdentifiers> {
+		try {
+			const params = new URLSearchParams();
+			if (include.length > 0) params.append('include', include.join(','));
+
+			const res: AxiosResponse = await this.axios.get(
+				`/players/${bmId}/relationships/related-identifiers?${params.toString()}`
+			);
+			const relatedIdentifiers: relatedIdentifiers = res.data as relatedIdentifiers;
+			return relatedIdentifiers;
+		} catch (err: AxiosError | any) {
+			console.error(`Failed to get related identifiers for player. Error: ${err.message}`);
 			throw err;
 		}
 	}
